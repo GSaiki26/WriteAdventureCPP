@@ -1,9 +1,12 @@
+// Libs
+using System.Diagnostics.CodeAnalysis;
+namespace Models.Items;
+
 // Class
-namespace Items {
-class PotionStamina : Potion {
+public class PotionStamina : Potion {
+  [SetsRequiredMembers]
   public PotionStamina() {
-    Name = "Poção de Estamina";
     Effect = new Random().Next(1, 20);
+    Name = $"Poção de Estamina +{Effect}";
   }
-}
 }

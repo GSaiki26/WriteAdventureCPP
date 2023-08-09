@@ -1,2 +1,5 @@
-#Write Adventure  
-It's a RPG game. Maybe this program (obviously) don't have a real "game" body, that's because it's only to learning :)
+# Write Adventure  
+The write adventure is a console RPG game. It was one of my first software, so I truly has a lot of care with it. 
+
+You can compile using dotnet.
+Enjoy it.

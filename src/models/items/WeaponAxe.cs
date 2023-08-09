@@ -1,14 +1,15 @@
 // Libs
-using System;
+using System.Diagnostics.CodeAnalysis;
+namespace Models.Items;
 
 // Class
-namespace Items {
-abstract class WeaponAxe : Weapon {
+public class WeaponAxe : Weapon {
+  [SetsRequiredMembers]
   public WeaponAxe() {
-    Name = "Machado";
     Damage = new Random().Next(20, 30);
     Durability = new Random().Next(4, 10);
+    DurabilityMax = Durability;
+    Name = "Machado";
     Stamina = new Random().Next(20, 30);
   }
-}
 }

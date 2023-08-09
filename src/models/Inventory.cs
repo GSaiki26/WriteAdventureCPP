@@ -1,6 +1,10 @@
+// Libs
+using Models.Items;
+namespace Models;
+
 // Class
-class Inventory <ItemType> {
-  public readonly List<ItemType> content = new();
+public class Inventory<IItem> {
+  public readonly List<IItem> content = new();
   private readonly int size;
 
   public Inventory(int size) {
@@ -14,7 +18,7 @@ class Inventory <ItemType> {
   /// Returns true if the item was successfully inserted in the inventory.
   /// Returns false if the item was not inserted in the inventory. Due to full slots.
   /// </Returns>
-  public bool AddItem(ItemType item) {
+  public bool AddItem(IItem item) {
     // Add the item to the bag.
     if ( content.Count == size ) return false;
     content.Add(item);
