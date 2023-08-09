@@ -4,16 +4,12 @@ using Models.Enemies;
 using Models.Items;
 
 namespace Controllers;
-public class RunChoice {
+public class ChoiceController {
   /// <summary>
   /// A method to check the selected option.
   /// </summary>
   /// Raisenabbke
-  public static void CheckChoice(List<string> choices, string? input) {
-    // Check if the input can be a choice.
-    if (input == null) throw new ArgumentNullException(input);
-    string selectedChoice = choices[int.Parse(input) - 1];
-
+  public static void CheckNormalChoices(string selectedChoice) {
     // Check all choices.
     Console.Clear();
     switch (selectedChoice) {
@@ -36,6 +32,44 @@ public class RunChoice {
   }
 
   /// <summary>
+  /// A method to be used when the game needs to ask something to the user.
+  /// </summary>
+  /// <returns>
+  /// Returns the selected choice.
+  /// </returns>
+  public static string SelectChoice(List<string> choices) {
+    // Display the options.
+    askTheInput:
+      ShowChoices(choices);
+      Console.Write("\nSua escolha: ");
+      string? input = Console.ReadLine();
+      Console.WriteLine("----------------------------------------");
+      try {
+        // Check if the input can be a choice.
+        if (input == null) throw new ArgumentNullException(input);
+        return choices[int.Parse(input) - 1];
+      } catch {
+        Console.Clear();
+        Game.WriteMessage("Escolha inválida", ConsoleColor.DarkRed);
+
+        goto askTheInput;
+      }
+  }
+
+  /// <summary>
+  /// A method to show the choices (Normal conditions).
+  /// </summary>
+  private static void ShowChoices(List<string> choices) {
+    string text = $"{Game.time} {Game.currentDay} [{Game.currentTime}/{Game.timeLimit}]\n";
+    for (int i = 0; i < choices.Count; i++) {
+      string choice = choices[i];
+      text += $"{choice} [{i + 1}]\n";
+    }
+    Game.WriteMessage(text, ConsoleColor.DarkGreen);
+    return;
+  }
+
+  /// <summary>
   /// A method to be ran when the user select search something.
   /// </summary>
   private static void OptionSearchThing() {
@@ -43,12 +77,12 @@ public class RunChoice {
     int pathToTake = new Random().Next(1, 101);
 
     // Define the player's destiny.
-    if (pathToTake <= 30) FindItem.FindPotion();  // 30%
-    if (pathToTake <= 50) FindItem.FindWeapon();  // 20%
-    if (pathToTake <= 70) CombatManager.StartCombat(new Wolf());  // 20%
-    if (pathToTake <= 90) CombatManager.StartCombat(new Slime());  // 20%
-    if (pathToTake <= 99) CombatManager.StartCombat(new Golem());  // 9%
-    if (pathToTake == 100) CombatManager.StartCombat(new Dragon());  // 1%
+    if (pathToTake <= 40) FindItemController.FindPotion();  // 40%
+    else if (pathToTake <= 70) FindItemController.FindWeapon();  // 30%
+    else if (pathToTake <= 80) CombatController.StartCombat(new Wolf());  // 10%
+    else if (pathToTake <= 90) CombatController.StartCombat(new Slime());  // 10%
+    else if (pathToTake <= 99) CombatController.StartCombat(new Golem());  // 9%
+    else if (pathToTake == 100) CombatController.StartCombat(new Dragon());  // 1%
 
     // Update the time from the game.
     Game.UpdateTime();
@@ -58,8 +92,8 @@ public class RunChoice {
   /// A method to be ran when the user select show weapons.
   /// </summary>
   private static void OptionShowWeapons() {
-    Inventory<IItem> inventory = Game.character.weaponInventory;
-    InventoryManager.DeleteItemFromInventory(inventory);
+    Inventory<Weapon> inventory = Game.character.weaponInventory;
+    InventoryController.DeleteItemFromInventory(inventory);
   }
 
   /// <summary>
@@ -67,15 +101,16 @@ public class RunChoice {
   /// </summary>
   private static void OptionShowPotions() {
     // Open the potion inventory interface.
-    Inventory<IItem> inventory = Game.character.potionInventory;
+    Inventory<Potion> inventory = Game.character.potionInventory;
 
     // Define the label to ask the user to select a potion.
     AskUserToSelectPotion:
-      Potion? potion = (Potion?)InventoryManager.UseItemFromInventory(inventory);
+      Potion? potion = (Potion?)InventoryController.UseItemFromInventory(inventory);
 
       // Check if the potion is valid.
       if (potion == null) return;
 
+      Console.Clear();
       if (potion is PotionLife) {
         Game.WriteMessage($"Você usou uma [Poção de Vida] que restaurou +{potion.Effect} de sua vida.");
         Game.character.AddLife(potion.Effect);

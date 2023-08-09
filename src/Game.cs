@@ -1,9 +1,10 @@
 // Libs
+using Controllers;
 using Models;
 
 // Classes
 class Game {
-  private static string time = "Dia";
+  public static string time = "Dia";
   public static int currentDay = 1;
   public static int currentTime = 1;
   public static int timeLimit = 5;
@@ -13,21 +14,10 @@ class Game {
     // Display the important things.
     ShowImportantThings();
 
-    // Display the normal options.
-    askTheInput:
-      ShowChoices();
-      Console.Write("\nSua escolha: ");
-      string? input = Console.ReadLine();
-      Console.WriteLine("----------------------------------------");
-      try {
-        Controllers.RunChoice.CheckChoice(GetNormalActions(), input);
-      } catch (Exception err) {
-        Console.Clear();
-        Console.WriteLine(err.Message);
-        WriteMessage("Escolha inválida", ConsoleColor.DarkRed);
-
-        goto askTheInput;
-      }
+    // Get the action and then run the selected choice.
+    List<string> choices = GetNormalActions();
+    string selectedChoice = ChoiceController.SelectChoice(choices);
+    ChoiceController.CheckNormalChoices(selectedChoice);
   }
 
   /// <summary>
@@ -53,20 +43,6 @@ class Game {
     }
 
     WriteMessage(string.Join("\n", text), color);
-  }
-
-  /// <summary>
-  /// A method to show the choices (Normal conditions).
-  /// </summary>
-  private static void ShowChoices() {
-    List<string> choices = GetNormalActions();
-    string text = $"{time} {currentDay} [{currentTime}/{timeLimit}]\n";
-    for (int i = 0; i < choices.Count; i++) {
-      string choice = choices[i];
-      text += $"{choice}[{i + 1}]\n";
-    }
-    WriteMessage(text, ConsoleColor.DarkGreen);
-    return;
   }
 
   /// <summary>

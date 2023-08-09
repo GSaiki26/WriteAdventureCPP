@@ -5,14 +5,14 @@ using Models.Items;
 namespace Controllers;
 
 // Class
-public class InventoryManager {
+public class InventoryController {
   /// <summary>
   /// A method to select some item from the inventory.
   /// </summary>
   /// <returns>
   /// Returns the selected item.
   /// </returns>
-  public static IItem? UseItemFromInventory(Inventory<IItem> inventory) {
+  public static IItem? UseItemFromInventory<T>(Inventory<T> inventory) where T : class, IItem {
     // Check if the inventory is valid.
     if (!IsInventoryValid(inventory)) return null;
 
@@ -32,7 +32,7 @@ public class InventoryManager {
   /// <summary>
   /// A method to delete some items from the inventory.
   /// </summary>
-  public static void DeleteItemFromInventory(Inventory<IItem> inventory) {
+  public static void DeleteItemFromInventory<T>(Inventory<T> inventory) where T : class, IItem {
     // Check if the inventory is valid.
     if (!IsInventoryValid(inventory)) return;
 
@@ -52,7 +52,7 @@ public class InventoryManager {
   /// <summary>
   /// A method to just show the content from the inventory.
   /// </summary>
-  public static void OpenInventory(Inventory<IItem> inventory) {
+  public static void OpenInventory<T>(Inventory<T> inventory) where T : class, IItem {
     // Check if the inventory is valid.
     if (!IsInventoryValid(inventory)) return;
 
@@ -66,7 +66,7 @@ public class InventoryManager {
   /// <returns>
   /// Returns the selected index.
   /// </returns>
-  private static int? SelectItemFromInventory(Inventory<IItem> inventory) {
+  private static int? SelectItemFromInventory<T>(Inventory<T> inventory) where T : class, IItem {
     // Show the inventory content.
     ShowContent(inventory.content, true);
 
@@ -90,7 +90,7 @@ public class InventoryManager {
   /// <summary>
   /// A method to show the content from the inventory.
   /// </summary>
-  private static void ShowContent(List<IItem> content, bool showExitButton = true) {
+  private static void ShowContent<T>(List<T> content, bool showExitButton = true) where T : class, IItem {
     // Add all the items from the inventory to the string, so that can be printed with their index.
     string text = "";
     for (int i = 0; i < content.Count; i++) {
@@ -108,7 +108,7 @@ public class InventoryManager {
   /// <returns>
   /// Returns if the inventory is valid.
   /// </returns>
-  private static bool IsInventoryValid(Inventory<IItem> inventory) {
+  private static bool IsInventoryValid<T>(Inventory<T> inventory) {
     // Check if the inventory has some content.
     if (inventory.content.Count == 0) {
       Game.WriteMessage("A bolsa está vazia.", ConsoleColor.DarkYellow);

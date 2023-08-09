@@ -9,12 +9,12 @@ public class Character {
   private int expMax = 100;
   public int life = 100;
   public int lifeMax = 100;
-  private int level = 1;
+  public int level = 1;
   public int strength = 1;
   public int stamina = 100;
   public int staminaMax = 100;
-  public Inventory<IItem> weaponInventory = new(6);
-  public Inventory<IItem> potionInventory = new(6);
+  public Inventory<Weapon> weaponInventory = new(6);
+  public Inventory<Potion> potionInventory = new(6);
 
   /// <summary>
   /// A method to add some experience to the character.

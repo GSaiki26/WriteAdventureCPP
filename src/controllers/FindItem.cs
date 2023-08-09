@@ -4,7 +4,7 @@ using Models.Items;
 namespace Controllers;
 
 // Class
-class FindItem {
+class FindItemController {
   /// <summary>
   /// A method to define the potion that the player'll find.
   /// </summary>
